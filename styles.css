@@ -1,0 +1,33 @@
+* {
+    margin: 0px;
+    padding: 0px;
+}
+
+.construction_border {
+    border-style: solid;
+    border-color: black;
+    border-width: 1px;
+    font-family: 'Courier New', Courier, monospace;
+    /*background-color: pink;*/
+    position: absolute;
+    left: 10vw;
+    right: auto;
+
+}
+
+.loading {
+    background-color: rgb(0, 0, 0);
+    color: white;
+    max-width: fit-content;
+    max-height: 20px;
+    position: fixed;
+    
+    inset: 0px;
+    margin: auto;
+
+    padding: 10px;
+    text-align: center;
+    border-radius: 25px;
+
+    font-family: Arial, Helvetica, sans-serif;
+}
