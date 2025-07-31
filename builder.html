@@ -7,18 +7,31 @@
     <title>Build your website today!</title>
 </head>
 <body>
-    <h1>Construct your website today!</h1>
+    <div class="header">
+        <h1>Construct your website today!</h1>
+    </div>
 
     <div class="loading">
-
         <p><b>Oops! The editor is still loading... :P</b><p>
     </div>
 
-    <div class="construction_border" id="const_window">
-        <p>hello</p>
+    <div class="construction_window">
+
+        <div class="component_box">
+            <button class="component_button" id="text">Text box</button>
+            <button class="component_button" id="head">Header</button>
+            <button class="component_button" id="none">None</button>
+        </div>
+
+        <div class="construction_border" id="const_window">
+            
+        </div>
+
     </div>
+    
 </body>
 
 <script src="window_manager.js"></script>
+<script src="component_button_manager.js"></script>
 
 </html>

@@ -1,18 +1,17 @@
 * {
     margin: 0px;
     padding: 0px;
+    font-family: Arial, Helvetica, sans-serif;
 }
 
-.construction_border {
-    border-style: solid;
-    border-color: black;
-    border-width: 1px;
-    font-family: 'Courier New', Courier, monospace;
-    /*background-color: pink;*/
-    position: absolute;
-    left: 10vw;
-    right: auto;
+.header {
+    padding-left: 5px;
+    padding-bottom: 10px;
+}
 
+.construction_window {
+    flex-direction: row;
+    display: flex;
 }
 
 .loading {
@@ -30,4 +29,26 @@
     border-radius: 25px;
 
     font-family: Arial, Helvetica, sans-serif;
+}
+
+.construction_border {
+    border-style: solid;
+    border-color: rgb(0, 0, 0);
+    border-width: 1px;
+    background-color: rgb(255, 255, 255);
+    position: absolute;
+    left: 10vw;
+    right: auto;
+
+}
+
+.component_box {
+    padding-left: 1.5vw;
+    flex-direction: column;
+    display: flex;
+}
+
+.component_button {
+    width: 7.5vw;
+    margin-bottom: 10px;
 }
