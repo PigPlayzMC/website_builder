@@ -1,4 +1,5 @@
 const construction_window = document.getElementById("const_window");
+const hammer = document.getElementById("hammer");
 let mouse_x = 0;
 let mouse_y = 0;
 
@@ -37,12 +38,15 @@ function formatting(style) {
     if (style == 1) {
         // Creating
         construction_window.style.borderColor = "rgba(74, 255, 68, 1)";
+        hammer.style.display = "block";
     } else if (style == 2) {
         // Deleting
         construction_window.style.borderColor = "rgba(255, 68, 68, 1)";
+        hammer.style.display = "block";
     } else {
         // Idle
         construction_window.style.borderColor = "rgba(0, 0, 0, 1)";
+        hammer.style.display = "none";
     }
 }
 
@@ -53,8 +57,8 @@ function updateCoords(event) {
     relative_mouse_x = mouse_x - construction_x;
     relative_mouse_y = mouse_y - construction_y;
 
-    console.log("[Absolute] x: " + mouse_x + ", y: " + mouse_y);
-    console.log("[Relative] x: " + relative_mouse_x + ", y: " + relative_mouse_y);
+    ////console.log("[Absolute] x: " + mouse_x + ", y: " + mouse_y);
+    ////console.log("[Relative] x: " + relative_mouse_x + ", y: " + relative_mouse_y);
 }
 
 construction_window.addEventListener("mousemove", updateCoords, false);
