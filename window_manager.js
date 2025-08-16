@@ -81,8 +81,13 @@ function addComponent(current_action) {
         }
     } else if (current_action == "remo") {
         // Find components overlapping
+
         // Find highest z index
+
         // Remove this component
+        
+    } else {
+        ////console.log("CW: Click purposeless :(");
     }
 };
 
@@ -90,7 +95,9 @@ construction_window.addEventListener("mousemove", updateCoords, false);
 construction_window.addEventListener("mouseenter", updateCoords, false);
 construction_window.addEventListener("mouseleave", updateCoords, false);
 
-document.addEventListener("click", addComponent(current_action), false);
+construction_window.addEventListener("click", function() {
+    addComponent(current_action);
+});
 
 size();
 
