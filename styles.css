@@ -60,3 +60,11 @@
     width: 7.5vw;
     margin-bottom: 10px;
 }
+
+.component_button_modifier {
+    width: 7.5vw;
+    margin-bottom: 10px;
+    background-color: red;
+    color: white;
+    border-color: black;
+}
