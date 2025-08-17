@@ -1,0 +1,11 @@
+.comp_text_box {
+    font-family: sans-serif;
+    font-size: medium;
+
+    color: black;
+    background-color: white;
+    border-color: black;
+
+    border-radius: 5px;
+    border-style: solid;
+}

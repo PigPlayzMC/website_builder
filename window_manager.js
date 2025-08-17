@@ -14,6 +14,9 @@ let current_action = "none";
 let adding = "none";
 let history = ["", "", "", "", "", "", "", "", "", ""]; // 10 item list, including current action, located at history[0]
 
+const default_text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
+const insert_before = document.getElementById("insert_before");
+
 function size() {
     console.log("Window resize detected...");
 
@@ -73,11 +76,26 @@ function updateHistory(action) {
     history.unshift(action);
 };
 
+// Adding functions
+function addTextBox(text, insert_before, mouse_x, mouse_y) {
+    const default_textbox = document.createElement("div");
+    const default_text = document.createTextNode(text)
+
+    default_textbox.appendChild(default_text);
+
+    construction_window.insertBefore(default_textbox, insert_before);
+
+    console.log("Textbox created!")
+};
+
 function addComponent(current_action) {
     console.log("CW: Click registered!");
     if (current_action == "addd") {
         if (adding == "text") {
             // Add text box
+            addTextBox(default_text, insert_before, 0, 0);
+
+            // Update history
         }
     } else if (current_action == "remo") {
         // Find components overlapping
@@ -86,6 +104,7 @@ function addComponent(current_action) {
 
         // Remove this component
         
+        // Update history
     } else {
         ////console.log("CW: Click purposeless :(");
     }

@@ -68,3 +68,7 @@
     color: white;
     border-color: black;
 }
+
+.secret {
+    display: none;
+}
