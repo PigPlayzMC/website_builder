@@ -17,6 +17,20 @@ let history = ["", "", "", "", "", "", "", "", "", ""]; // 10 item list, includi
 const default_text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.";
 const insert_before = document.getElementById("insert_before");
 
+let text_boxes_id = [];
+let text_box_id_number = 0;
+
+let components = [];
+let component = { // Example values, do not use
+    id: "EX0",
+    content: "!Hola, soy Example Data!", // Could be text or a file or a secret 3rd thing (Might even update this)
+    x: 0,
+    y: 0,
+    width: 0,
+    height: 0,
+    z_index: 0, // This one *can* actually be left by default.
+}
+
 function size() {
     console.log("Window resize detected...");
 
@@ -77,23 +91,31 @@ function updateHistory(action) {
 };
 
 // Adding functions
-function addTextBox(text, insert_before, mouse_x, mouse_y) {
+function addTextBox(text, insert_before, id, mouse_x, mouse_y) {
     const default_textbox = document.createElement("div");
     const default_text = document.createTextNode(text)
 
     default_textbox.appendChild(default_text);
 
+    default_textbox.setAttribute("id", "TB" + id);
+
+    default_textbox.className = "comp_text_box";
+
     construction_window.insertBefore(default_textbox, insert_before);
 
-    console.log("Textbox created!")
+    console.log("Textbox with id: TB" + id +" created!");
 };
 
 function addComponent(current_action) {
     console.log("CW: Click registered!");
     if (current_action == "addd") {
         if (adding == "text") {
+            // Get ID for new textbox
+            text_box_id_number = text_box_id_number + 1;
+
             // Add text box
-            addTextBox(default_text, insert_before, 0, 0);
+            addTextBox(default_text, insert_before, text_box_id_number, 0, 0);
+            text_boxes_id.push("TB" + text_box_id_number);
 
             // Update history
         }
@@ -106,7 +128,7 @@ function addComponent(current_action) {
         
         // Update history
     } else {
-        ////console.log("CW: Click purposeless :(");
+        // Get components present
     }
 };
 
@@ -142,3 +164,6 @@ window.addEventListener('remo', function() {
     current_action = "remo";
     formatting(2);
 })
+
+//! DEBUG PWEASE WEMOVE
+addTextBox("DEBUG " + default_text, insert_before, text_box_id_number, 0, 0);

@@ -6,6 +6,8 @@
     background-color: white;
     border-color: black;
 
-    border-radius: 5px;
+    border-width: 1px;
     border-style: solid;
+
+    max-width: 600px;
 }

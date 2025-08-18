@@ -72,3 +72,15 @@
 .secret {
     display: none;
 }
+
+.specific {
+    display: block;
+    position: absolute;
+    right: 0vw;
+    left: auto;
+    width: 10vw;
+}
+
+.textbox_options {
+    padding-left: 1vw;
+}
