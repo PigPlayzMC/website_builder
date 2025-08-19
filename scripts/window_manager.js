@@ -21,13 +21,14 @@ let text_boxes_id = [];
 let text_box_id_number = 0;
 
 let components = [];
-let component = { // Example values, do not use
+const component = { // Example values, do not use (I have just learnt this is completely irrelevant but oh well)
     id: "EX0",
-    content: "!Hola, soy Example Data!", // Could be text or a file or a secret 3rd thing (Might even update this)
+    content: "!Hola, soy Example Data!", // Could be text or a file or a secret 3rd thing (Might even update this) [unused]
+    class: "",
     x: 0,
     y: 0,
     width: 0,
-    height: 0,
+    height: 0, // This may not be known when created
     z_index: 0, // This one *can* actually be left by default.
 }
 
@@ -94,16 +95,33 @@ function updateHistory(action) {
 function addTextBox(text, insert_before, id, mouse_x, mouse_y) {
     const default_textbox = document.createElement("div");
     const default_text = document.createTextNode(text)
+    const new_textbox = Object.create(component);
 
     default_textbox.appendChild(default_text);
+    ////new_textbox.id = text;
 
     default_textbox.setAttribute("id", "TB" + id);
+    new_textbox.id = "TB" + id;
 
     default_textbox.className = "comp_text_box";
+    new_textbox.class = "comp_text_box";
 
+    // Positioning
+    //TODO
+    new_textbox.x = mouse_x;
+    new_textbox.y = mouse_y;
+
+    new_textbox.width = 600; // Update if CSS default changes.
+    
     construction_window.insertBefore(default_textbox, insert_before);
 
+    new_textbox.height = default_textbox.offsetHeight;
+
+    new_textbox.z_index = 0; // Default value.
+
     console.log("Textbox with id: TB" + id +" created!");
+
+    return new_textbox
 };
 
 function addComponent(current_action) {
@@ -114,7 +132,7 @@ function addComponent(current_action) {
             text_box_id_number = text_box_id_number + 1;
 
             // Add text box
-            addTextBox(default_text, insert_before, text_box_id_number, 0, 0);
+            components.push(addTextBox(default_text, insert_before, text_box_id_number, 0, 0));
             text_boxes_id.push("TB" + text_box_id_number);
 
             // Update history
@@ -129,6 +147,42 @@ function addComponent(current_action) {
         // Update history
     } else {
         // Get components present
+        let components_below = [];
+        components.forEach(component => {
+            if (relative_mouse_x >= component.x && relative_mouse_x <= component.x + component.width) {
+                if (relative_mouse_y >= component.y && relative_mouse_y <= component.y + component.height) {
+                    components_below.push(component);
+                }
+            }
+        });
+
+        let component_selected;
+        if (components_below.length == 0) {
+            return // No elements are below the mouse
+        } else if (components_below.length == 1) {
+            component_selected = components_below[0];
+        } else { // Definitely not the most efficient way to do this but it is easy and this will have a lifetime user count of three, if lucky. :(
+            let highest_z_index = -1; // Ensures this is always set by something.
+            let indexes = [-1]; // Will error if not set.
+            let iterator = 0;
+
+            components_below.forEach(component => {
+                if (component.z_index > highest_z_index) {
+                    highest_z_index = component.z_index;
+                    indexes = [iterator];
+                } else if (component.z_index == highest_z_index) {
+                    indexes.push(iterator);
+                };
+
+                iterator += 1;
+            });
+
+            component_selected = components_below[indexes[0]]; // First encountered high z-index index will be selected.
+        };
+
+        // Component has now been chosen! yaay
+        const selected_component = document.getElementById(component_selected.id);
+        selected_component.style.borderColor = "rgb(200, 255, 0)";
     }
 };
 
@@ -166,4 +220,4 @@ window.addEventListener('remo', function() {
 })
 
 //! DEBUG PWEASE WEMOVE
-addTextBox("DEBUG " + default_text, insert_before, text_box_id_number, 0, 0);
+components.push(addTextBox("DEBUG " + default_text, insert_before, text_box_id_number, 0, 0));
