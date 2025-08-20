@@ -5,7 +5,7 @@ const remove = new Event("remo");
 
 function newComponent(button) {
     console.log("Button with id " + button + " clicked!");
-    if (button == "text") {
+    if (button == "text") { //TODO Rewrite as switch
         window.dispatchEvent(text_box);
     } else if (button == "head") {
         window.dispatchEvent(header);

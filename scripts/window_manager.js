@@ -18,7 +18,7 @@ const default_text = "Lorem ipsum dolor sit amet, consectetur adipiscing elit, s
 const insert_before = document.getElementById("insert_before");
 
 let text_boxes_id = [];
-let text_box_id_number = 0;
+let text_box_id_number = -1; // Added first so the initial value is 0
 
 let components = [];
 const component = { // Example values, do not use (I have just learnt this is completely irrelevant but oh well)
@@ -31,6 +31,9 @@ const component = { // Example values, do not use (I have just learnt this is co
     height: 0, // This may not be known when created
     z_index: 0, // This one *can* actually be left by default.
 }
+
+const selected = document.getElementById("selected");
+let selected_component; // Not to be confused with component_selected which is local to a function.
 
 function size() {
     console.log("Window resize detected...");
@@ -126,7 +129,7 @@ function addTextBox(text, insert_before, id, mouse_x, mouse_y) {
 
 function addComponent(current_action) {
     console.log("CW: Click registered!");
-    if (current_action == "addd") {
+    if (current_action == "addd") { //TODO Rewrite as switch
         if (adding == "text") {
             // Get ID for new textbox
             text_box_id_number = text_box_id_number + 1;
@@ -145,7 +148,7 @@ function addComponent(current_action) {
         // Remove this component
         
         // Update history
-    } else {
+    } else { // Click to select elements
         // Get components present
         let components_below = [];
         components.forEach(component => {
@@ -181,8 +184,43 @@ function addComponent(current_action) {
         };
 
         // Component has now been chosen! yaay
-        const selected_component = document.getElementById(component_selected.id);
-        selected_component.style.borderColor = "rgb(200, 255, 0)";
+        selected_component = document.getElementById(component_selected.id);
+        selected_component.classList.add("selected");
+
+        // Change selected text
+        selected.innerText = "Selected: " + component_selected.id;
+
+        // Reveal relevant options
+        const type_of_component = component_selected.id[0] + component_selected.id[1];
+        if (type_of_component == "TB") { // Reveal textbox specific options
+            configureOptions(1);
+        } else if (type_of_component == "PLACEHOLDEER") { //Intentional typo
+            configureOptions(2);
+        };
+    }
+};
+
+function configureOptions(setting) {
+    const textbox_options = document.getElementById("textbox_options");
+
+    if (setting == 0) {
+        textbox_options.style.display = "none";
+        selected.innerText = "Selected: ";
+    } else if (setting == 1) {
+        textbox_options.style.display = "block";
+    } else {
+        // In the event of accidental incorrect value.
+        configureOptions(0);
+    }
+};
+
+function clearSelection() {
+    configureOptions(0);
+    try {
+        selected_component.classList.remove("selected");
+    } catch {
+        console.warn("Unneeded use of clearSelection function. Please reconsider your choices.");
+        console.log("^^Massive overreaction, this function is called when any button is clicked, sorry about him.^^");
     }
 };
 
@@ -205,19 +243,33 @@ window.addEventListener('text', function() {
     current_action = "addd"; // Had to be four letters _/\o.o/\_ Don't blame me, I make the rules but am not taking criticism.
     adding = "text";
     formatting(1);
+    clearSelection();
 });
 
 window.addEventListener('none', function() {
     console.log("Deselecting current object...");
     current_action = "none";
     formatting(0);
+    clearSelection();
 });
 
 window.addEventListener('remo', function() {
     console.log("Removing objects...");
     current_action = "remo";
     formatting(2);
-})
+    clearSelection();
+});
 
-//! DEBUG PWEASE WEMOVE
-components.push(addTextBox("DEBUG " + default_text, insert_before, text_box_id_number, 0, 0));
+// Final config for editing mode
+configureOptions(0);
+
+//! DEBUG PWEASE WEMOVE (Or disable)
+const debug = true;
+if (debug) {
+    text_box_id_number = text_box_id_number + 1;
+    components.push(addTextBox("DEBUG " + default_text, insert_before, text_box_id_number, 0, 0));
+    text_boxes_id.push("TB" + text_box_id_number);
+    text_box_id_number = text_box_id_number + 1;
+    components.push(addTextBox("DEBUG2 " + default_text, insert_before, text_box_id_number, 0, 0));
+    text_boxes_id.push("TB" + text_box_id_number);
+};
