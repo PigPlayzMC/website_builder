@@ -30,6 +30,24 @@ const component = { // Example values, do not use (I have just learnt this is co
     width: 0,
     height: 0, // This may not be known when created
     z_index: 0, // This one *can* actually be left by default.
+} //! Styling data depricated. Do not use, leaving because I don't know where it was used previously, if at all?!?
+
+class TextboxStyle { // Following standards? Who knows, but the rest of the code isn't so I wouldn't worry...
+    constructor(font_family, font_size, font_colour, background_colour, border_style, border_colour, border_width, border_radius, width) {
+        this.font_family = font_family; // css style, then style setting
+        this.font_size = font_size;
+        this.font_colour = font_colour;
+
+        this.background_colour = background_colour;
+
+        this.border_style = border_style; // This is also whether a border is even present
+        this.border_colour = border_colour;
+        this.border_width = border_width; // Given in px
+        this.border_radius = border_radius;
+
+        this.width = width; // See doc
+        // No height.
+    }
 }
 
 const selected = document.getElementById("selected");
@@ -106,9 +124,6 @@ function addTextBox(text, insert_before, id, mouse_x, mouse_y) {
     default_textbox.setAttribute("id", "TB" + id);
     new_textbox.id = "TB" + id;
 
-    default_textbox.className = "comp_text_box";
-    new_textbox.class = "comp_text_box";
-
     // Positioning
     //TODO
     new_textbox.x = mouse_x;
@@ -121,6 +136,18 @@ function addTextBox(text, insert_before, id, mouse_x, mouse_y) {
     new_textbox.height = default_textbox.offsetHeight;
 
     new_textbox.z_index = 0; // Default value.
+
+    // Styling here, after insert so that js can access using the function later
+    const added_box = document.getElementById(new_textbox.id);
+    added_box.style.fontFamily = "sans-serif";
+    added_box.style.fontSize = "medium";
+    added_box.style.fontColor = "black";
+    added_box.style.backgroundColor = "white";
+    added_box.style.borderStyle = "solid";
+    added_box.style.borderColor = "black";
+    added_box.style.borderWidth = "1px";
+    added_box.style.borderRadius = "0px";
+    added_box.style.width = "600px";
 
     console.log("Textbox with id: TB" + id +" created!");
 
@@ -140,7 +167,7 @@ function addComponent(current_action) {
 
             // Update history
         }
-    } else if (current_action == "remo") {
+    } else if (current_action == "remo") { //TODO
         // Find components overlapping
 
         // Find highest z index
@@ -155,8 +182,8 @@ function addComponent(current_action) {
             if (relative_mouse_x >= component.x && relative_mouse_x <= component.x + component.width) {
                 if (relative_mouse_y >= component.y && relative_mouse_y <= component.y + component.height) {
                     components_below.push(component);
-                }
-            }
+                };
+            };
         });
 
         let component_selected;
@@ -185,19 +212,26 @@ function addComponent(current_action) {
 
         // Component has now been chosen! yaay
         selected_component = document.getElementById(component_selected.id);
+
+        const type_of_component = component_selected.id[0] + component_selected.id[1];
+
+        if (type_of_component == "TB") {
+            let component_style = new TextboxStyle;
+            component_style = getComponentStyle("TB", selected_component);
+        };
+
         selected_component.classList.add("selected");
 
         // Change selected text
         selected.innerText = "Selected: " + component_selected.id;
 
         // Reveal relevant options
-        const type_of_component = component_selected.id[0] + component_selected.id[1];
-        if (type_of_component == "TB") { // Reveal textbox specific options
+        if (type_of_component == "TB") {
             configureOptions(1);
-        } else if (type_of_component == "PLACEHOLDEER") { //Intentional typo
+        } else if (type_of_component == "PH") {
             configureOptions(2);
         };
-    }
+    };
 };
 
 function configureOptions(setting) {
@@ -211,7 +245,7 @@ function configureOptions(setting) {
     } else {
         // In the event of accidental incorrect value.
         configureOptions(0);
-    }
+    };
 };
 
 function clearSelection() {
@@ -221,6 +255,28 @@ function clearSelection() {
     } catch {
         console.warn("Unneeded use of clearSelection function. Please reconsider your choices.");
         console.log("^^Massive overreaction, this function is called when any button is clicked, sorry about him.^^");
+    }
+};
+
+function getComponentStyle(type, selected_component) {
+    switch(type) {
+        case "TB":
+            let return_data = new TextboxStyle;
+
+            return_data.font_family = selected_component.style.fontFamily;
+            return_data.font_size = selected_component.style.fontSize;
+            return_data.font_colour = selected_component.style.fontColor;
+
+            return_data.background_colour = selected_component.style.backgroundColor;
+
+            return_data.border_style = selected_component.style.borderStyle;
+            return_data.border_colour = selected_component.style.borderColor;
+            return_data.border_width = selected_component.style.borderWidth;
+            return_data.border_radius = selected_component.style.borderRadius;
+
+            return_data.width = selected_component.style.width;
+
+            console.log(return_data);
     }
 };
 
@@ -260,6 +316,18 @@ window.addEventListener('remo', function() {
     clearSelection();
 });
 
+// Options for editing textboxs listeners
+const tb_border_box = document.getElementById("textbox_border");
+tb_border_box.addEventListener("change", () => {
+    const border_options = document.getElementById("border_options");
+
+    if (tb_border_box.checked) {
+        border_options.style.display = "block";
+    } else {
+        border_options.style.display = "none";
+    };
+});
+
 // Final config for editing mode
 configureOptions(0);
 
@@ -269,6 +337,7 @@ if (debug) {
     text_box_id_number = text_box_id_number + 1;
     components.push(addTextBox("DEBUG " + default_text, insert_before, text_box_id_number, 0, 0));
     text_boxes_id.push("TB" + text_box_id_number);
+
     text_box_id_number = text_box_id_number + 1;
     components.push(addTextBox("DEBUG2 " + default_text, insert_before, text_box_id_number, 0, 0));
     text_boxes_id.push("TB" + text_box_id_number);
