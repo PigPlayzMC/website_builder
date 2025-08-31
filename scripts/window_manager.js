@@ -24,7 +24,7 @@ let components = [];
 const component = { // Example values, do not use (I have just learnt this is completely irrelevant but oh well)
     id: "EX0",
     content: "!Hola, soy Example Data!", // Could be text or a file or a secret 3rd thing (Might even update this) [unused]
-    class: "",
+    class: "", //! This is depricated.
     x: 0,
     y: 0,
     width: 0,
@@ -49,6 +49,8 @@ class TextboxStyle { // Following standards? Who knows, but the rest of the code
         // No height.
     }
 }
+
+let component_style; // This may be a textbox or something else.
 
 const selected = document.getElementById("selected");
 let selected_component; // Not to be confused with component_selected which is local to a function.
@@ -216,7 +218,6 @@ function addComponent(current_action) {
         const type_of_component = component_selected.id[0] + component_selected.id[1];
 
         if (type_of_component == "TB") {
-            let component_style = new TextboxStyle;
             component_style = getComponentStyle("TB", selected_component);
         };
 
@@ -226,7 +227,7 @@ function addComponent(current_action) {
         selected.innerText = "Selected: " + component_selected.id;
 
         // Reveal relevant options
-        if (type_of_component == "TB") {
+        if (type_of_component == "TB") { //TODO vers
             configureOptions(1);
         } else if (type_of_component == "PH") {
             configureOptions(2);
@@ -240,8 +241,14 @@ function configureOptions(setting) {
     if (setting == 0) {
         textbox_options.style.display = "none";
         selected.innerText = "Selected: ";
-    } else if (setting == 1) {
+    } else if (setting == 1) { // Textbox
         textbox_options.style.display = "block";
+
+        if (component_style.border_width != "0px") { // Border
+            toggleBorderSettings(1);
+        } else { // No border
+            toggleBorderSettings(0);
+        }
     } else {
         // In the event of accidental incorrect value.
         configureOptions(0);
@@ -277,8 +284,23 @@ function getComponentStyle(type, selected_component) {
             return_data.width = selected_component.style.width;
 
             console.log(return_data);
+
+            return return_data
     }
 };
+
+function toggleBorderSettings(on_off) {
+    const tb_border_box = document.getElementById("textbox_border");
+    const border_options = document.getElementById("border_options");
+
+    if (on_off == 1) { // Display border settings
+        border_options.style.display = "block";
+        tb_border_box.checked = "true";
+    } else {
+        border_options.style.display = "none";
+        tb_border_box.checked = "false";
+    }
+}
 
 construction_window.addEventListener("mousemove", updateCoords, false);
 construction_window.addEventListener("mouseenter", updateCoords, false);
