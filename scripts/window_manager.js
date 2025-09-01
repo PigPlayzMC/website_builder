@@ -221,7 +221,8 @@ function addComponent(current_action) {
             component_style = getComponentStyle("TB", selected_component);
         };
 
-        selected_component.classList.add("selected");
+        // Indicate the selected element
+        selected_component.style.backgroundColor = "yellow";
 
         // Change selected text
         selected.innerText = "Selected: " + component_selected.id;
@@ -248,21 +249,20 @@ function configureOptions(setting) {
             toggleBorderSettings(1);
         } else { // No border
             toggleBorderSettings(0);
-        }
+        };
     } else {
         // In the event of accidental incorrect value.
         configureOptions(0);
     };
 };
 
-function clearSelection() {
+function clearSelection(original_background) {
     configureOptions(0);
-    try {
-        selected_component.classList.remove("selected");
-    } catch {
-        console.warn("Unneeded use of clearSelection function. Please reconsider your choices.");
-        console.log("^^Massive overreaction, this function is called when any button is clicked, sorry about him.^^");
-    }
+    if (original_background == null) {
+        console.log("Original colour unknown or not set. This is expected behaviour if no element has been selected prior.");
+    } else {
+        selected_component.style.backgroundColor = original_background;
+    };
 };
 
 function getComponentStyle(type, selected_component) {
@@ -272,7 +272,7 @@ function getComponentStyle(type, selected_component) {
 
             return_data.font_family = selected_component.style.fontFamily;
             return_data.font_size = selected_component.style.fontSize;
-            return_data.font_colour = selected_component.style.fontColor;
+            return_data.font_colour = selected_component.style.color;
 
             return_data.background_colour = selected_component.style.backgroundColor;
 
@@ -321,21 +321,36 @@ window.addEventListener('text', function() {
     current_action = "addd"; // Had to be four letters _/\o.o/\_ Don't blame me, I make the rules but am not taking criticism.
     adding = "text";
     formatting(1);
-    clearSelection();
+
+    try {
+        clearSelection(component_style.background_colour);
+    } catch {
+        clearSelection(null);
+    };
 });
 
 window.addEventListener('none', function() {
     console.log("Deselecting current object...");
     current_action = "none";
     formatting(0);
-    clearSelection();
+
+    try {
+        clearSelection(component_style.background_colour);
+    } catch {
+        clearSelection(null);
+    };
 });
 
 window.addEventListener('remo', function() {
     console.log("Removing objects...");
     current_action = "remo";
     formatting(2);
-    clearSelection();
+    
+    try {
+        clearSelection(component_style.background_colour);
+    } catch {
+        clearSelection(null);
+    };
 });
 
 // Options for editing textboxs listeners
