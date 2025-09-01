@@ -1,0 +1,18 @@
+/* Mostly just displays default styling but may become outdated as it is not updated.*/
+.comp_text_box {
+    font-family: sans-serif;
+    font-size: medium;
+
+    color: black;
+    background-color: white;
+    border-color: black;
+
+    border-width: 1px;
+    border-style: solid;
+
+    max-width: 600px;
+}
+
+.selected { /*! Not deprecated!! */
+    border-color: rgb(200, 255, 0);
+}

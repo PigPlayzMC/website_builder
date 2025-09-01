@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="stylesheets/web_styles.css">
+    <link rel="stylesheet" href="stylesheets/component_styles.css"> <!-- Styling only for added components -->
+    <title>Build your website today!</title>
+</head>
+<body>
+    <div class="header">
+        <h1>Construct your website today!</h1>
+    </div>
+
+    <div class="loading">
+        <p><b>Oops! The editor is still loading... :P</b><p>
+    </div>
+
+    <div class="construction_window">
+
+        <div class="component_box">
+            <!-- Add components -->
+            <button class="component_button" id="text">Text box</button>
+            <button class="component_button" id="head">Header</button>
+
+            <!-- Modifiers -->
+            <button class="component_button_modifier" id="none">Deselect</button>
+            <button class="component_button_modifier" id="remo">Remove</button>
+            
+            <div>
+                <img class="hammer_icon" id="hammer" src="/assets/hammer.svg"/>
+            </div>
+        </div>
+
+        <div class="construction_border" id="const_window">
+            <div class="secret" id="insert_before">
+                <!-- There is nothing in this div. It exists solely to allow insertBefore. He is an enabler, please ignore. -->
+            </div>
+        </div>
+
+        <div class="specific"> <!-- Should probably be called options -->
+            <!-- This class houses component specific checkboxes and options as well as individual modifiers -->
+             <div class="textbox_options" id="selected">
+                Selected:
+            </div>
+             <div class="textbox_options" id="textbox_options">
+                <div>
+                    <input type="checkbox" id="textbox_border" name="border">
+                    <label for="textbox_border">Border</label>
+                </div>
+                <div id="border_options">
+                    colour???
+                </div>
+             </div>
+        </div>
+
+    </div>
+    
+</body>
+
+<script src="scripts/window_manager.js"></script>
+<script src="scripts/component_button_manager.js"></script>
+
+</html>
