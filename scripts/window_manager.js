@@ -52,7 +52,7 @@ class TextboxStyle { // Following standards? Who knows, but the rest of the code
 
 let component_style; // This may be a textbox or something else.
 
-const selected = document.getElementById("selected");
+const selected = document.getElementById("selected"); //! ??? Don't use
 let selected_component; // Not to be confused with component_selected which is local to a function.
 
 function size() {
@@ -245,6 +245,7 @@ function configureOptions(setting) {
     } else if (setting == 1) { // Textbox
         textbox_options.style.display = "block";
 
+        console.log("component_style.border_width == " + component_style.border_width);
         if (component_style.border_width != "0px") { // Border
             toggleBorderSettings(1);
         } else { // No border
@@ -295,10 +296,11 @@ function toggleBorderSettings(on_off) {
 
     if (on_off == 1) { // Display border settings
         border_options.style.display = "block";
-        tb_border_box.checked = "true";
+        tb_border_box.checked = true;
     } else {
         border_options.style.display = "none";
-        tb_border_box.checked = "false";
+        tb_border_box.checked = false;
+        console.log("Border checkbox should not be checked!");
     }
 }
 
@@ -353,15 +355,22 @@ window.addEventListener('remo', function() {
     };
 });
 
-// Options for editing textboxs listeners
+// Options for editing textboxes listeners
 const tb_border_box = document.getElementById("textbox_border");
 tb_border_box.addEventListener("change", () => {
     const border_options = document.getElementById("border_options");
+    console.log("Textbox border options checkbox clicked.");
 
     if (tb_border_box.checked) {
         border_options.style.display = "block";
+
+        selected_component.style.borderWidth = "1px"; // Could use a store to re-add the last value but for efficiency I will not.
+        component_style.border_width = "1px";
     } else {
         border_options.style.display = "none";
+
+        selected_component.style.borderWidth = "0px";
+        component_style.border_width = "0px";
     };
 });
 
