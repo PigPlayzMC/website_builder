@@ -24,13 +24,13 @@ let components = [];
 const component = { // Example values, do not use (I have just learnt this is completely irrelevant but oh well)
     id: "EX0",
     content: "!Hola, soy Example Data!", // Could be text or a file or a secret 3rd thing (Might even update this) [unused]
-    class: "", //! This is depricated.
+    class: "", //! This is deprecated.
     x: 0,
     y: 0,
     width: 0,
     height: 0, // This may not be known when created
     z_index: 0, // This one *can* actually be left by default.
-} //! Styling data depricated. Do not use, leaving because I don't know where it was used previously, if at all?!?
+} //! Styling data deprecated. Do not use, leaving because I don't know where it was used previously, if at all?!?
 
 class TextboxStyle { // Following standards? Who knows, but the rest of the code isn't so I wouldn't worry...
     constructor(font_family, font_size, font_colour, background_colour, border_style, border_colour, border_width, border_radius, width) {
@@ -54,6 +54,8 @@ let component_style; // This may be a textbox or something else.
 
 const selected = document.getElementById("selected"); //! ??? Don't use
 let selected_component; // Not to be confused with component_selected which is local to a function.
+
+let editing_component = false;
 
 function size() {
     console.log("Window resize detected...");
@@ -178,6 +180,12 @@ function addComponent(current_action) {
         
         // Update history
     } else { // Click to select elements
+        try {
+            clearSelection(component_style.background_colour);
+        } catch {
+            clearSelection(null);
+        };
+
         // Get components present
         let components_below = [];
         components.forEach(component => {
