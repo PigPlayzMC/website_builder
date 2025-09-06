@@ -137,8 +137,6 @@ function addTextBox(text, insert_before, id, mouse_x, mouse_y) {
     
     construction_window.insertBefore(default_textbox, insert_before);
 
-    new_textbox.height = default_textbox.offsetHeight;
-
     new_textbox.z_index = 0; // Default value.
 
     // Styling here, after insert so that js can access using the function later
@@ -152,6 +150,9 @@ function addTextBox(text, insert_before, id, mouse_x, mouse_y) {
     added_box.style.borderWidth = "1px";
     added_box.style.borderRadius = "0px";
     added_box.style.width = "600px";
+
+    new_textbox.height = default_textbox.offsetHeight; // Set AFTER width is assigned so that the actual styling and height is used.
+    console.log("textbox height: " + new_textbox.height);
 
     console.log("Textbox with id: TB" + id +" created!");
 
@@ -191,6 +192,7 @@ function addComponent(current_action) {
         components.forEach(component => {
             if (relative_mouse_x >= component.x && relative_mouse_x <= component.x + component.width) {
                 if (relative_mouse_y >= component.y && relative_mouse_y <= component.y + component.height) {
+                    console.log(component);
                     components_below.push(component);
                 };
             };
