@@ -24,13 +24,13 @@ let components = [];
 const component = { // Example values, do not use (I have just learnt this is completely irrelevant but oh well)
     id: "EX0",
     content: "!Hola, soy Example Data!", // Could be text or a file or a secret 3rd thing (Might even update this) [unused]
-    class: "", //! This is depricated.
+    class: "", //! This is deprecated.
     x: 0,
     y: 0,
     width: 0,
     height: 0, // This may not be known when created
     z_index: 0, // This one *can* actually be left by default.
-} //! Styling data depricated. Do not use, leaving because I don't know where it was used previously, if at all?!?
+} //! Styling data deprecated. Do not use, leaving because I don't know where it was used previously, if at all?!?
 
 class TextboxStyle { // Following standards? Who knows, but the rest of the code isn't so I wouldn't worry...
     constructor(font_family, font_size, font_colour, background_colour, border_style, border_colour, border_width, border_radius, width) {
@@ -52,8 +52,10 @@ class TextboxStyle { // Following standards? Who knows, but the rest of the code
 
 let component_style; // This may be a textbox or something else.
 
-const selected = document.getElementById("selected");
+const selected = document.getElementById("selected"); //! ??? Don't use
 let selected_component; // Not to be confused with component_selected which is local to a function.
+
+let editing_component = false;
 
 function size() {
     console.log("Window resize detected...");
@@ -135,8 +137,6 @@ function addTextBox(text, insert_before, id, mouse_x, mouse_y) {
     
     construction_window.insertBefore(default_textbox, insert_before);
 
-    new_textbox.height = default_textbox.offsetHeight;
-
     new_textbox.z_index = 0; // Default value.
 
     // Styling here, after insert so that js can access using the function later
@@ -150,6 +150,9 @@ function addTextBox(text, insert_before, id, mouse_x, mouse_y) {
     added_box.style.borderWidth = "1px";
     added_box.style.borderRadius = "0px";
     added_box.style.width = "600px";
+
+    new_textbox.height = default_textbox.offsetHeight; // Set AFTER width is assigned so that the actual styling and height is used.
+    console.log("textbox height: " + new_textbox.height);
 
     console.log("Textbox with id: TB" + id +" created!");
 
@@ -178,11 +181,18 @@ function addComponent(current_action) {
         
         // Update history
     } else { // Click to select elements
+        try {
+            clearSelection(component_style.background_colour);
+        } catch {
+            clearSelection(null);
+        };
+
         // Get components present
         let components_below = [];
         components.forEach(component => {
             if (relative_mouse_x >= component.x && relative_mouse_x <= component.x + component.width) {
                 if (relative_mouse_y >= component.y && relative_mouse_y <= component.y + component.height) {
+                    console.log(component);
                     components_below.push(component);
                 };
             };
@@ -245,6 +255,7 @@ function configureOptions(setting) {
     } else if (setting == 1) { // Textbox
         textbox_options.style.display = "block";
 
+        console.log("component_style.border_width == " + component_style.border_width);
         if (component_style.border_width != "0px") { // Border
             toggleBorderSettings(1);
         } else { // No border
@@ -295,10 +306,11 @@ function toggleBorderSettings(on_off) {
 
     if (on_off == 1) { // Display border settings
         border_options.style.display = "block";
-        tb_border_box.checked = "true";
+        tb_border_box.checked = true;
     } else {
         border_options.style.display = "none";
-        tb_border_box.checked = "false";
+        tb_border_box.checked = false;
+        console.log("Border checkbox should not be checked!");
     }
 }
 
@@ -353,15 +365,22 @@ window.addEventListener('remo', function() {
     };
 });
 
-// Options for editing textboxs listeners
+// Options for editing textboxes listeners
 const tb_border_box = document.getElementById("textbox_border");
 tb_border_box.addEventListener("change", () => {
     const border_options = document.getElementById("border_options");
+    console.log("Textbox border options checkbox clicked.");
 
     if (tb_border_box.checked) {
         border_options.style.display = "block";
+
+        selected_component.style.borderWidth = "1px"; // Could use a store to re-add the last value but for efficiency I will not.
+        component_style.border_width = "1px";
     } else {
         border_options.style.display = "none";
+
+        selected_component.style.borderWidth = "0px";
+        component_style.border_width = "0px";
     };
 });
 

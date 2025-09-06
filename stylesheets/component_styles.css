@@ -1,5 +1,5 @@
 /* Mostly just displays default styling but may become outdated as it is not updated.*/
-.comp_text_box {
+.comp_text_box { /*! Deprecated. Do not. */
     font-family: sans-serif;
     font-size: medium;
 
