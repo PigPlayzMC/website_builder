@@ -84,3 +84,9 @@
 .textbox_options {
     padding-left: 1vw;
 }
+
+.colour_picker {
+    width: 7.5vw;
+    display: block;
+    height: 1vw;
+}
