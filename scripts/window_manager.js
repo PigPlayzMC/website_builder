@@ -57,6 +57,13 @@ let selected_component; // Not to be confused with component_selected which is l
 
 let editing_component = false;
 
+const background_colour_selector = document.getElementById("colour");
+const border_colour_selector = document.getElementById("border_colour");
+
+const rgb2hex = (rgb) => `#${rgb.match(/^rgb\((\d+),\s*(\d+),\s*(\d+)\)$/).slice(1).map(n => parseInt(n, 10).toString(16).padStart(2, '0')).join('')}`;
+
+//==== FILE STARTS (such a mess) ====//
+
 function size() {
     console.log("Window resize detected...");
 
@@ -143,10 +150,10 @@ function addTextBox(text, insert_before, id, mouse_x, mouse_y) {
     const added_box = document.getElementById(new_textbox.id);
     added_box.style.fontFamily = "sans-serif";
     added_box.style.fontSize = "medium";
-    added_box.style.fontColor = "black";
-    added_box.style.backgroundColor = "white";
+    added_box.style.fontColor = "#000000";
+    added_box.style.backgroundColor = "#FFFFFF";
     added_box.style.borderStyle = "solid";
-    added_box.style.borderColor = "black";
+    added_box.style.borderColor = "#000000";
     added_box.style.borderWidth = "1px";
     added_box.style.borderRadius = "0px";
     added_box.style.width = "600px";
@@ -261,6 +268,15 @@ function configureOptions(setting) {
         } else { // No border
             toggleBorderSettings(0);
         };
+
+        console.log(component_style.background_colour)
+
+        let colour_from_rgb = rgb2hex(component_style.background_colour);
+
+        background_colour_selector.value = colour_from_rgb;
+
+        console.log(component_style.border_colour);
+        border_colour_selector.value = rgb2hex(component_style.border_colour);
     } else {
         // In the event of accidental incorrect value.
         configureOptions(0);
